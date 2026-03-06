@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TechRecomiendo — La mejor tecnología, para ti</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f6f3;
+      --surface: #ffffff;
+      --text: #0d0d0d;
+      --muted: #8a8a8a;
+      --accent: #ff4500;
+      --accent-light: #fff1ec;
+      --border: #e8e6e1;
+      --amazon: #ff9900;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(247,246,243,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 5%;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem; font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+    .logo span { color: var(--accent); }
+    nav ul { list-style: none; display: flex; gap: 2rem; }
+    nav ul a {
+      text-decoration: none; color: var(--muted);
+      font-size: 0.88rem; font-weight: 500;
+      transition: color .2s;
+    }
+    nav ul a:hover { color: var(--text); }
+    .nav-badge {
+      background: var(--accent); color: #fff;
+      font-size: 0.75rem; font-weight: 600;
+      padding: 4px 12px; border-radius: 20px;
+      letter-spacing: 0.04em;
+    }
+
+    /* HERO */
+    .hero {
+      padding: 100px 5% 80px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+      align-items: center; max-width: 1280px; margin: 0 auto;
+    }
+    .hero-eyebrow {
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.4rem, 4vw, 3.6rem);
+      font-weight: 800; line-height: 1.08;
+      letter-spacing: -0.04em;
+      margin-bottom: 1.2rem;
+    }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero p {
+      color: var(--muted); font-size: 1.05rem;
+      max-width: 420px; margin-bottom: 2rem;
+    }
+    .hero-actions { display: flex; gap: 1rem; align-items: center; }
+    .btn-primary {
+      background: var(--text); color: #fff;
+      padding: 12px 28px; border-radius: 4px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem; font-weight: 600;
+      text-decoration: none; transition: opacity .2s;
+    }
+    .btn-primary:hover { opacity: 0.8; }
+    .hero-link {
+      color: var(--muted); font-size: 0.88rem;
+      text-decoration: underline; text-underline-offset: 3px;
+    }
+    .hero-visual {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    }
+    .hero-mini-card {
+      background: var(--bg);
+      border-radius: 8px; padding: 1rem;
+      display: flex; flex-direction: column; gap: 0.5rem;
+      animation: fadeUp .6s ease both;
+    }
+    .hero-mini-card:nth-child(2) { animation-delay: .1s; }
+    .hero-mini-card:nth-child(3) { animation-delay: .2s; }
+    .hero-mini-card:nth-child(4) { animation-delay: .3s; }
+    .mini-icon {
+      font-size: 1.8rem; margin-bottom: 0.3rem;
+    }
+    .mini-name { font-size: 0.78rem; font-weight: 600; }
+    .mini-price { font-size: 0.9rem; font-weight: 700; color: var(--accent); }
+    .mini-stars { font-size: 0.7rem; color: var(--amazon); letter-spacing: -1px; }
+
+    /* SECTION COMMON */
+    .section { max-width: 1280px; margin: 0 auto; padding: 80px 5%; }
+    .section-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 2.5rem;
+    }
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.8rem; font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+    .section-title span { color: var(--accent); }
+    .see-all {
+      color: var(--muted); font-size: 0.85rem; font-weight: 500;
+      text-decoration: none; display: flex; align-items: center; gap: 4px;
+      transition: color .2s;
+    }
+    .see-all:hover { color: var(--text); }
+
+    /* FILTER PILLS */
+    .filters {
+      display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem;
+    }
+    .pill {
+      padding: 6px 16px; border-radius: 20px;
+      font-size: 0.82rem; font-weight: 500; cursor: pointer;
+      border: 1px solid var(--border);
+      background: transparent; color: var(--muted);
+      transition: all .2s;
+    }
+    .pill.active, .pill:hover {
+      background: var(--text); color: #fff; border-color: var(--text);
+    }
+
+    /* PRODUCT GRID */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.2rem;
+    }
+    .product-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform .25s, box-shadow .25s;
+      position: relative;
+      animation: fadeUp .5s ease both;
+    }
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.08);
+    }
+    .badge-top { position: absolute; top: 12px; left: 12px; color: #fff; font-size: 0.68rem; font-weight: 700; padding: 3px 9px; border-radius: 3px; letter-spacing: 0.06em; text-transform: uppercase; }
+    .badge-oferta         { background: var(--accent); }
+    .badge-nuevo          { background: #0d0d0d; }
+    .badge-relanzamiento  { background: #7c3aed; }
+    .badge-reacondicionado{ background: #0369a1; }
+    .badge-destacado      { background: var(--amazon); color: #000; }
+    .product-img-wrap {
+      height: 200px;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 4rem; padding: 1rem;
+    }
+    .product-body { padding: 1.2rem; }
+    .product-category {
+      font-size: 0.72rem; font-weight: 600; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: 0.4rem;
+    }
+    .product-name {
+      font-size: 0.95rem; font-weight: 600;
+      line-height: 1.35; margin-bottom: 0.6rem;
+    }
+    .product-rating {
+      display: flex; align-items: center; gap: 6px;
+      margin-bottom: 0.8rem;
+    }
+    .stars { color: var(--amazon); font-size: 0.8rem; letter-spacing: -1px; }
+    .rating-count { font-size: 0.75rem; color: var(--muted); }
+    .product-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 0.8rem; border-top: 1px solid var(--border);
+    }
+    .price-block {}
+    .price-old {
+      font-size: 0.75rem; color: var(--muted);
+      text-decoration: line-through; display: block;
+    }
+    .price-new {
+      font-size: 1.15rem; font-weight: 700; color: var(--text);
+    }
+    .discount {
+      font-size: 0.72rem; font-weight: 700;
+      color: var(--accent); margin-left: 4px;
+    }
+    .btn-amazon {
+      background: var(--amazon);
+      color: #000; font-weight: 700;
+      font-size: 0.78rem; padding: 8px 14px;
+      border-radius: 4px; text-decoration: none;
+      display: flex; align-items: center; gap: 5px;
+      transition: opacity .2s; white-space: nowrap;
+    }
+    .btn-amazon:hover { opacity: 0.85; }
+
+    /* CAROUSEL */
+    .carousel { position: relative; overflow: hidden; height: 220px; background: #fff; border-bottom: 1px solid var(--border); }
+    .carousel-track { display: flex; height: 100%; transition: transform .35s ease; }
+    .carousel-slide {
+      min-width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      background: #fff; padding: 0.5rem;
+    }
+    .carousel-slide img {
+      max-width: 100%; max-height: 100%;
+      width: auto; height: auto;
+      object-fit: contain;
+      cursor: zoom-in;
+      image-rendering: -webkit-optimize-contrast;
+    }
+    .carousel-slide .slide-emoji { font-size: 4rem; }
+
+    /* LIGHTBOX */
+    #lightbox {
+      display: none; position: fixed; inset: 0; z-index: 9999;
+      background: rgba(0,0,0,0.88);
+      align-items: center; justify-content: center;
+      cursor: zoom-out;
+    }
+    #lightbox.open { display: flex; }
+    #lightbox-inner {
+      position: relative;
+      background: #fff;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 80vw;
+      max-height: 85vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+      animation: zoomIn .2s ease;
+    }
+    #lightbox img {
+      max-width: 70vw;
+      max-height: 70vh;
+      width: auto; height: auto;
+      object-fit: contain;
+      image-rendering: -webkit-optimize-contrast;
+    }
+    #lightbox-close {
+      position: absolute; top: -16px; right: -16px;
+      background: #fff; border: 1px solid var(--border);
+      color: #333; font-size: 1.1rem;
+      width: 36px; height: 36px; border-radius: 50%;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    @keyframes zoomIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    .carousel-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.9); border: 1px solid var(--border);
+      border-radius: 50%; width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 0.75rem; z-index: 2; transition: background .2s;
+    }
+    .carousel-btn:hover { background: #fff; }
+    .carousel-btn.prev { left: 6px; }
+    .carousel-btn.next { right: 6px; }
+    .carousel-dots {
+      position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 4px;
+    }
+    .carousel-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--border); cursor: pointer; transition: background .2s;
+    }
+    .carousel-dot.active { background: var(--text); }
+
+    /* FEATURED BANNER */
+    .featured {
+      margin: 0 5% 80px;
+      background: var(--text);
+      border-radius: 16px;
+      padding: 3rem 4rem;
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 2rem; align-items: center;
+      position: relative; overflow: hidden;
+    }
+    .featured::before {
+      content: '';
+      position: absolute; top: -60px; right: 200px;
+      width: 300px; height: 300px;
+      background: var(--accent);
+      border-radius: 50%;
+      opacity: 0.08;
+    }
+    .featured-label {
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 0.6rem;
+    }
+    .featured h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem; font-weight: 800;
+      color: #fff; letter-spacing: -0.03em;
+      line-height: 1.15; margin-bottom: 0.8rem;
+    }
+    .featured p { color: #aaa; font-size: 0.92rem; max-width: 400px; }
+    .featured-right { text-align: center; }
+    .featured-emoji { font-size: 5rem; display: block; margin-bottom: 1rem; }
+    .featured-price { color: #fff; font-size: 1.8rem; font-weight: 700; }
+    .featured-price small { font-size: 1rem; color: #aaa; text-decoration: line-through; margin-left: 8px; }
+    .btn-featured {
+      display: inline-block; margin-top: 1.2rem;
+      background: var(--amazon); color: #000;
+      font-weight: 700; font-size: 0.9rem;
+      padding: 12px 28px; border-radius: 4px;
+      text-decoration: none; transition: opacity .2s;
+    }
+    .btn-featured:hover { opacity: 0.85; }
+
+    /* STATS BAR */
+    .stats {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 2rem 5%;
+    }
+    .stats-inner {
+      max-width: 1280px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 2rem; text-align: center;
+    }
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem; font-weight: 800; letter-spacing: -0.04em;
+    }
+    .stat-num span { color: var(--accent); }
+    .stat-label { font-size: 0.82rem; color: var(--muted); margin-top: 0.2rem; }
+
+    /* DISCLAIMER */
+    .disclaimer {
+      text-align: center;
+      padding: 2rem 5%;
+      font-size: 0.75rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      max-width: 800px; margin: 0 auto;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 5%;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.82rem; color: var(--muted);
+    }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--text); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; gap: 2rem; padding: 60px 5% 40px; }
+      .hero-visual { display: none; }
+      .featured { grid-template-columns: 1fr; padding: 2rem; }
+      .featured-right { display: none; }
+      .stats-inner { grid-template-columns: repeat(2,1fr); }
+      nav ul { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <div id="lightbox-inner">
+    <button id="lightbox-close">✕</button>
+    <img id="lightbox-img" src="" alt="Imagen ampliada">
+  </div>
+</div>
+
+<!-- MODAL AFILIADOS -->
+<div id="modal-afiliados" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:12px;padding:2rem;max-width:420px;margin:1rem;position:relative;box-shadow:0 24px 60px rgba(0,0,0,0.2);">
+    <button onclick="document.getElementById('modal-afiliados').style.display='none'" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#888;">✕</button>
+    <div style="font-size:2rem;margin-bottom:0.8rem;">🛒</div>
+    <h3 style="font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;margin-bottom:0.8rem;">Accede a los descuentos</h3>
+    <p style="font-size:0.9rem;color:#555;line-height:1.6;margin-bottom:1.2rem;">Para acceder a los descuentos de esta página debes ser cliente inscrito de Amazon, o visita este enlace y afíliate, <strong>es gratis:</strong></p>
+    <a href="https://amazon.com" target="_blank" style="display:inline-block;background:#ff9900;color:#000;font-weight:700;padding:10px 24px;border-radius:4px;text-decoration:none;font-size:0.9rem;">Ir a Amazon →</a>
+  </div>
+</div>
+
+<!-- PANEL GUÍAS -->
+<div id="panel-guias" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:12px;padding:2rem;max-width:480px;margin:1rem;position:relative;box-shadow:0 24px 60px rgba(0,0,0,0.2);max-height:80vh;overflow-y:auto;">
+    <button onclick="document.getElementById('panel-guias').style.display='none'" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:1.4rem;cursor:pointer;color:#888;">✕</button>
+    <div style="font-size:2rem;margin-bottom:0.8rem;">📖</div>
+    <h3 style="font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;margin-bottom:1rem;">Cómo comprar en Amazon</h3>
+    <ol style="font-size:0.88rem;color:#444;line-height:1.9;padding-left:1.2rem;">
+      <li>Crea una cuenta gratuita en <strong>amazon.com</strong></li>
+      <li>Busca el producto que te interesa o usa los enlaces de esta página</li>
+      <li>Haz clic en <strong>"Agregar al carrito"</strong></li>
+      <li>Ve al carrito y haz clic en <strong>"Proceder al pago"</strong></li>
+      <li>Ingresa tu dirección de envío</li>
+      <li>Selecciona el método de pago (tarjeta, débito, etc.)</li>
+      <li>Confirma tu pedido y recibirás un correo de confirmación</li>
+      <li>Haz seguimiento de tu paquete desde <strong>"Mis pedidos"</strong></li>
+    </ol>
+    <p style="margin-top:1rem;font-size:0.78rem;color:#888;">💡 Los precios y disponibilidad pueden cambiar. Verifica siempre en Amazon antes de comprar.</p>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Tech<span>Recomiendo</span></div>
+  <ul>
+    <li><a href="#top" id="nav-inicio">Inicio</a></li>
+    <li><a href="#productos" id="nav-ofertas" onclick="activarOferta()">Ofertas</a></li>
+    <li><a href="#comparativas" id="nav-comparativas">Comparativas</a></li>
+    <li><a href="#" id="nav-guias" onclick="abrirGuias(event)">Guías</a></li>
+  </ul>
+  <button class="nav-badge" onclick="abrirModalAfiliados()" style="cursor:pointer;border:none;">Afiliados Amazon</button>
+</nav>
+
+<!-- HERO -->
+<div id="top" class="hero">
+  <div>
+    <p class="hero-eyebrow">Selección editorial · Actualizado hoy</p>
+    <h1>La mejor <em>tecnología</em>, para ti</h1>
+    <p>Analizamos cientos de productos para que solo veas lo que realmente vale la pena comprar en Amazon.</p>
+    <div class="hero-actions">
+      <a href="#productos" class="btn-primary">Ver productos →</a>
+      <a href="#" class="hero-link">Ver comparativas</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-mini-card">
+      <div class="mini-icon">🎧</div>
+      <div class="mini-name">Sony WH-1000XM5</div>
+      <div class="mini-stars">★★★★★</div>
+      <div class="mini-price">279€</div>
+    </div>
+    <div class="hero-mini-card">
+      <div class="mini-icon">⌚</div>
+      <div class="mini-name">Apple Watch S9</div>
+      <div class="mini-stars">★★★★★</div>
+      <div class="mini-price">399€</div>
+    </div>
+    <div class="hero-mini-card">
+      <div class="mini-icon">📱</div>
+      <div class="mini-name">iPad Air M2</div>
+      <div class="mini-stars">★★★★☆</div>
+      <div class="mini-price">699€</div>
+    </div>
+    <div class="hero-mini-card">
+      <div class="mini-icon">💻</div>
+      <div class="mini-name">MacBook Air M3</div>
+      <div class="mini-stars">★★★★★</div>
+      <div class="mini-price">1.199€</div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stats-inner">
+    <div>
+      <div class="stat-num">+<span>240</span></div>
+      <div class="stat-label">Productos analizados</div>
+    </div>
+    <div>
+      <div class="stat-num"><span>4.8</span>★</div>
+      <div class="stat-label">Valoración media</div>
+    </div>
+    <div>
+      <div class="stat-num">-<span>40%</span></div>
+      <div class="stat-label">Descuento medio encontrado</div>
+    </div>
+    <div>
+      <div class="stat-num"><span>12K</span></div>
+      <div class="stat-label">Lectores este mes</div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<div class="section" id="productos">
+  <div class="section-header">
+    <h2 class="section-title">Lo más <span>recomendado</span></h2>
+    <a href="#" class="see-all">Ver todo →</a>
+  </div>
+
+  <div class="filters" id="filtros">
+    <button class="pill active" data-cat="Todo">Todo</button>
+  </div>
+
+  <div class="product-grid" id="product-grid">
+
+  </div>
+</div>
+
+<!-- COMPARATIVAS -->
+<div class="section" id="comparativas">
+  <div class="section-header">
+    <h2 class="section-title">Buscar por <span>descuento</span></h2>
+  </div>
+  <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:2rem;">
+    <div style="flex:1;min-width:220px;">
+      <label style="font-size:0.8rem;font-weight:600;color:var(--muted);display:block;margin-bottom:0.4rem;text-transform:uppercase;letter-spacing:0.08em;">Ingrese un porcentaje de descuento</label>
+      <div style="display:flex;gap:0.5rem;align-items:center;">
+        <input type="number" id="input-descuento" min="1" max="99" placeholder="Ej: 34"
+          style="padding:10px 14px;border:1px solid var(--border);border-radius:4px;font-size:1rem;font-family:'DM Sans',sans-serif;width:120px;outline:none;">
+        <button onclick="buscarPorDescuento()" style="background:var(--text);color:#fff;border:none;padding:10px 20px;border-radius:4px;font-weight:600;font-size:0.9rem;cursor:pointer;font-family:'DM Sans',sans-serif;">Buscar</button>
+        <button onclick="limpiarComparativa()" style="background:transparent;color:var(--muted);border:1px solid var(--border);padding:10px 16px;border-radius:4px;font-size:0.85rem;cursor:pointer;">✕ Limpiar</button>
+      </div>
+    </div>
+  </div>
+  <div id="comparativa-resultado" style="font-size:0.9rem;color:var(--muted);margin-bottom:1.5rem;"></div>
+  <div class="product-grid" id="comparativa-grid"></div>
+</div>
+
+<!-- FEATURED BANNER -->
+<div class="featured">
+  <div>
+    <p class="featured-label">🔥 Oferta del día</p>
+    <h2>hark AV2501AE - Robot aspirador AI con base autovaciante XL HEPA, sin bolsa, capacidad de 60 días, navegación LIDAR</h2>
+    <p>perfecta para pelo de mascotas, compatible con Alexa, conexión Wi-Fi, alfombra y</p>
+    <a href="https://www.amazon.com/Shark-AV2501AE-autovaciante-navegaci%C3%B3n-compatible/dp/B08QZVSC8D?pf_rd_r=4CHGSZHXP3GXE381AZPD&pf_rd_p=cff0d717-d700-411f-af7b-0c048cdae8c8&th=1&linkCode=ll2&tag=ofertastechco-20&linkId=be9cff832f8289da251a85a098488505&language=es_US&ref_=as_li_ss_tl" target="_blank" class="btn-featured">Ver en Amazon →</a>
+  </div>
+  <div class="featured-right">
+    <img src="imagenes/shark.jpg" 
+     style="max-height:180px; max-width:100%; object-fit:contain;">
+    <div class="featured-price">US$299.99 <small>US$649.99</small></div>
+  </div>
+</div>
+
+<!-- DISCLAIMER -->
+<div class="disclaimer">
+  <strong>Aviso de afiliación:</strong> Como Asociado de Amazon, obtenemos ingresos por las compras adscritas que cumplen los requisitos aplicables. Los precios y disponibilidad pueden variar. Última actualización: marzo 2026.
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div>© 2026 TechRecomiendo — Todos los derechos reservados</div>
+  <div style="display:flex;gap:1.5rem">
+    <a href="#">Política de privacidad</a>
+    <a href="#">Aviso legal</a>
+    <a href="#">Contacto</a>
+  </div>
+</footer>
+
+<script>
+  let TODOS_PRODUCTOS = [];
+  const ITEMS_POR_PAGINA = 10;
+
+  // ── Badge config ──────────────────────────────────────────────
+  const BADGES = {
+    oferta:         { texto: 'Oferta',           clase: 'badge-oferta'         },
+    nuevo:          { texto: 'Nuevo',            clase: 'badge-nuevo'          },
+    relanzamiento:  { texto: 'Relanzamiento',    clase: 'badge-relanzamiento'  },
+    reacondicionado:{ texto: 'Reacond. Amazon',  clase: 'badge-reacondicionado'},
+    destacado:      { texto: 'Destacado',        clase: 'badge-destacado'      }
+  };
+
+  // ── Helpers ───────────────────────────────────────────────────
+  function estrellas(n) {
+    const llenas = Math.floor(n);
+    const media  = n % 1 >= 0.5 ? 1 : 0;
+    const vacias = 5 - llenas - media;
+    return '★'.repeat(llenas) + (media ? '½' : '') + '☆'.repeat(vacias);
+  }
+
+  function parsearDescuento(str) {
+    if (!str) return 0;
+    return Math.abs(parseFloat(str.replace(/[^0-9.]/g, ''))) || 0;
+  }
+
+  // ── Build one card ────────────────────────────────────────────
+  function crearTarjeta(p) {
+    const badge  = BADGES[p.estado] || null;
+    const imgs   = (p.imagenes || []).slice(0, 3);
+    const slides = imgs.map(src =>
+      `<div class="carousel-slide"><img src="${src}" alt="${p.nombre}" loading="lazy" onclick="abrirLightbox('${src}','${p.nombre}')"></div>`
+    ).join('');
+    const dots = imgs.map((_, i) =>
+      `<div class="carousel-dot${i === 0 ? ' active' : ''}"></div>`
+    ).join('');
+
+    return `
+    <div class="product-card" data-cat="${p.categoria}" data-estado="${p.estado||''}">
+      ${badge ? `<span class="badge-top ${badge.clase}">${badge.texto}</span>` : ''}
+      <div class="carousel">
+        <div class="carousel-track">${slides}</div>
+        <button class="carousel-btn prev">‹</button>
+        <button class="carousel-btn next">›</button>
+        <div class="carousel-dots">${dots}</div>
+      </div>
+      <div class="product-body">
+        <p class="product-category">${p.categoria}</p>
+        <p class="product-name">${p.nombre}</p>
+        <div class="product-rating">
+          <span class="stars">${estrellas(p.estrellas)}</span>
+          <span class="rating-count">${p.estrellas} (${p.resenas} reseñas)</span>
+        </div>
+        <div class="product-footer">
+          <div class="price-block">
+            ${p.precio_anterior ? `<span class="price-old">${p.precio_anterior}</span>` : ''}
+            <span class="price-new">${p.precio_actual}
+              ${p.descuento ? `<span class="discount">${p.descuento}</span>` : ''}
+            </span>
+          </div>
+          <a href="${p.enlace}" target="_blank" rel="nofollow sponsored" class="btn-amazon">🛒 Amazon</a>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // ── Lightbox ──────────────────────────────────────────────────
+  const lightbox    = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+
+  function abrirLightbox(src, alt) {
+    lightboxImg.src = src;
+    lightboxImg.alt = alt || '';
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function cerrarLightbox() {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('lightbox-close').addEventListener('click', cerrarLightbox);
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) cerrarLightbox(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarLightbox(); });
+
+  // ── Init carousels ────────────────────────────────────────────
+  function initCarousels(container) {
+    const scope = container || document;
+    scope.querySelectorAll('.carousel').forEach(carousel => {
+      if (carousel._init) return;
+      carousel._init = true;
+      const track = carousel.querySelector('.carousel-track');
+      const dots  = carousel.querySelectorAll('.carousel-dot');
+      const total = carousel.querySelectorAll('.carousel-slide').length;
+      let current = 0;
+      function goTo(i) {
+        current = (i + total) % total;
+        track.style.transform = `translateX(-${current * 100}%)`;
+        dots.forEach((d, j) => d.classList.toggle('active', j === current));
+      }
+      carousel.querySelector('.prev').addEventListener('click', () => goTo(current - 1));
+      carousel.querySelector('.next').addEventListener('click', () => goTo(current + 1));
+      dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
+    });
+  }
+
+  // ── Fade-in on scroll ─────────────────────────────────────────
+  function initFadeIn() {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.product-card').forEach(card => {
+      if (card._observed) return;
+      card._observed = true;
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(20px)';
+      card.style.transition = 'opacity .5s ease, transform .5s ease';
+      obs.observe(card);
+    });
+  }
+
+  // ── Render into a grid ────────────────────────────────────────
+  function renderGrid(gridId, lista) {
+    const grid = document.getElementById(gridId);
+    grid.innerHTML = lista.map(crearTarjeta).join('');
+    initCarousels(grid);
+    initFadeIn();
+  }
+
+  // ── FILTRO PRINCIPAL (pills) ──────────────────────────────────
+  let categoriaActiva = 'Todo';
+
+  function renderProductos(catActiva) {
+    categoriaActiva = catActiva || 'Todo';
+    let lista;
+
+    if (categoriaActiva === 'Todo') {
+      // Primero con descuento, luego el resto, máx 10
+      const conDescuento = TODOS_PRODUCTOS.filter(p => p.descuento && parsearDescuento(p.descuento) > 0);
+      const sinDescuento = TODOS_PRODUCTOS.filter(p => !p.descuento || parsearDescuento(p.descuento) === 0);
+      lista = [...conDescuento, ...sinDescuento].slice(0, ITEMS_POR_PAGINA);
+    } else if (categoriaActiva === 'Ofertas') {
+      lista = TODOS_PRODUCTOS.filter(p => p.estado === 'oferta' || (p.descuento && parsearDescuento(p.descuento) > 0));
+    } else {
+      lista = TODOS_PRODUCTOS.filter(p => p.categoria === categoriaActiva);
+    }
+
+    renderGrid('product-grid', lista);
+  }
+
+  // ── Build filter pills ────────────────────────────────────────
+  function buildFiltros(productos) {
+    const filtrosEl = document.getElementById('filtros');
+    // Clear existing dynamic pills (keep Todo)
+    filtrosEl.innerHTML = '<button class="pill active" data-cat="Todo">Todo</button>';
+
+    // Add Ofertas pill
+    const ofertasBtn = document.createElement('button');
+    ofertasBtn.className = 'pill';
+    ofertasBtn.dataset.cat = 'Ofertas';
+    ofertasBtn.textContent = 'Ofertas 🔥';
+    filtrosEl.appendChild(ofertasBtn);
+
+    // Add category pills from JSON
+    const cats = [...new Set(productos.map(p => p.categoria))];
+    cats.forEach(cat => {
+      const btn = document.createElement('button');
+      btn.className = 'pill';
+      btn.dataset.cat = cat;
+      btn.textContent = cat;
+      filtrosEl.appendChild(btn);
+    });
+
+    filtrosEl.addEventListener('click', e => {
+      if (!e.target.classList.contains('pill')) return;
+      filtrosEl.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      e.target.classList.add('active');
+      renderProductos(e.target.dataset.cat);
+      document.getElementById('productos').scrollIntoView({ behavior: 'smooth' });
+    });
+  }
+
+  // ── COMPARATIVAS: buscar por descuento ────────────────────────
+  function buscarPorDescuento() {
+    const val = parseFloat(document.getElementById('input-descuento').value);
+    const resultado = document.getElementById('comparativa-resultado');
+    const grid = document.getElementById('comparativa-grid');
+
+    if (isNaN(val) || val <= 0 || val > 99) {
+      resultado.textContent = 'Ingresa un porcentaje válido entre 1 y 99.';
+      grid.innerHTML = '';
+      return;
+    }
+
+    const margen = 5; // ±5% de tolerancia
+    const filtrados = TODOS_PRODUCTOS.filter(p => {
+      const desc = parsearDescuento(p.descuento);
+      return desc >= (val - margen) && desc <= (val + margen);
+    });
+
+    if (filtrados.length === 0) {
+      resultado.innerHTML = `No hay productos con descuento de <strong>-${val}%</strong> (±${margen}%). Prueba otro valor.`;
+      grid.innerHTML = '';
+    } else {
+      resultado.innerHTML = `Mostrando ${filtrados.length} producto(s) con descuento aproximado de <strong>-${val}%</strong>:`;
+      renderGrid('comparativa-grid', filtrados);
+    }
+    document.getElementById('comparativas').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function limpiarComparativa() {
+    document.getElementById('input-descuento').value = '';
+    document.getElementById('comparativa-resultado').textContent = '';
+    document.getElementById('comparativa-grid').innerHTML = '';
+  }
+
+  // Enter key en input comparativa
+  document.getElementById('input-descuento').addEventListener('keydown', e => {
+    if (e.key === 'Enter') buscarPorDescuento();
+  });
+
+  // ── NAV: Ofertas ──────────────────────────────────────────────
+  function activarOferta() {
+    setTimeout(() => {
+      const pill = document.querySelector('[data-cat="Ofertas"]');
+      if (pill) {
+        document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        renderProductos('Ofertas');
+      }
+    }, 300);
+  }
+
+  // ── MODAL Afiliados ───────────────────────────────────────────
+  function abrirModalAfiliados() {
+    const m = document.getElementById('modal-afiliados');
+    m.style.display = 'flex';
+  }
+  document.getElementById('modal-afiliados').addEventListener('click', function(e) {
+    if (e.target === this) this.style.display = 'none';
+  });
+
+  // ── PANEL Guías ───────────────────────────────────────────────
+  function abrirGuias(e) {
+    e.preventDefault();
+    const m = document.getElementById('panel-guias');
+    m.style.display = 'flex';
+  }
+  document.getElementById('panel-guias').addEventListener('click', function(e) {
+    if (e.target === this) this.style.display = 'none';
+  });
+
+  // ── Load JSON and boot ────────────────────────────────────────
+  fetch('productos.json')
+    .then(r => r.json())
+    .then(productos => {
+      TODOS_PRODUCTOS = productos;
+      buildFiltros(productos);
+      renderProductos('Todo');
+    })
+    .catch(() => {
+      document.getElementById('product-grid').innerHTML =
+        '<p style="color:var(--muted);padding:2rem">No se pudieron cargar los productos.</p>';
+    });
+</script>
+</body>
+</html>
